@@ -1,22 +1,18 @@
-*** Settings ***
-Documentation     A test suite with a single test for New Tab
-...               Created by hats' Robotcorder
-Library           SeleniumLibrary    timeout=10
+Library    SeleniumLibrary
 
 *** Variables ***
-${BROWSER}    chrome
-${CHROME_OPTIONS}    --headless --no-sandbox --disable-dev-shm-usage
-${SLEEP}    3
-${NEW_TAB_URL}    about:blank
+${URL}    https://example.com
 
 *** Test Cases ***
-New Tab test
-    Open Browser    ${NEW_TAB_URL}    ${BROWSER}    options=${CHROME_OPTIONS}
-    # Navigate to a specific URL after opening a new tab
-    Go To    https://www.example.com
-    # Use a more reliable XPath or another locator strategy
-    Click Element    xpath=(//span)[1]
-    Sleep    ${SLEEP}
-    Click Element    xpath=(//span)[1]
-    Sleep    ${SLEEP}
-    Close Browser
+Open Browser to Example
+    Open Browser    ${URL}    chrome
+    Title Should Be    Example Domain
+    [Teardown]    Close Browser
+
+Verify Example Content
+    [Setup]    Open Browser to Example
+    Element Should Be Visible    xpath://h1[contains(text(), 'Example Domain')]
+    [Teardown]    Close Browser
+
+Verify Example Content1    
+    Log To Console    Example Domain
